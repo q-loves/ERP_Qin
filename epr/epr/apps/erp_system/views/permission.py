@@ -1,16 +1,15 @@
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from erp_system.serializers.permission import PermissionSerializer
 
-from erp_system.models import PermissionModel, MenuModel
+from erp_system.models import PermissionModel
 
 from erp_system.models import RoleModel
-from epr.utils.multiple_delete import MultipleDeleteMixin
+from epr.utils.base_views.multiple_delete import MultipleDeleteMixin
 
 
 class PermissionView(ModelViewSet,MultipleDeleteMixin):

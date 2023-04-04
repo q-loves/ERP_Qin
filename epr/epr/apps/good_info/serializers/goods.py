@@ -1,12 +1,10 @@
-from django.db.models import Sum
+from django.db import transaction
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from good_info.models import GoodsModel
 
 from good_info.models import GoodsInventoryModel
-
-from good_info.models import UnitsModel
 
 from good_info.serializers.units import UnitsSerializer
 
@@ -15,6 +13,8 @@ from good_info.serializers.goodscategory import GoodsCategorySerializer
 from good_info.models import AttachmentModel
 
 from good_info.serializers.attachment import AttachmentSerializer
+
+from epr.utils.base_views.get_cur_inventory import  get_current_inventory
 
 
 class GoodsInventorySerializer(ModelSerializer):
@@ -34,10 +34,11 @@ class GoodsSimpleSerializer(ModelSerializer):
     #重写create,在增加商品时，加上初始库存
     def create(self, validated_data):
         inventory_list=validated_data.pop('inventory_list')
-        goods=GoodsModel.objects.create(**validated_data)
-        for item in inventory_list:
-            item['cur_inventory']=item.get('init_inventory',0)
-            GoodsInventoryModel.objects.create(goods=goods,**item)
+        with transaction.atomic():#数据库事务处理
+            goods=GoodsModel.objects.create(**validated_data)
+            for item in inventory_list:
+                item['cur_inventory']=item.get('init_inventory',0)
+                GoodsInventoryModel.objects.create(goods=goods,**item)
         return goods
     #重写update，在修改时只能修改库存的最大值最小值
     def update(self, instance, validated_data):
@@ -54,10 +55,10 @@ class GoodsSearchSerializer(ModelSerializer):
     units=UnitsSerializer(read_only=True)
     categories=GoodsCategorySerializer(read_only=True)
     image_list=serializers.SerializerMethodField()
-    total_inventory=serializers.SerializerMethodField()
+
     inventory_list=GoodsInventorySerializer(read_only=True,many=True)
     category=serializers.SlugRelatedField(slug_field='name',read_only=True)
-
+    cur_inventory=serializers.SerializerMethodField()
     class Meta:
         model=GoodsModel
         fields='__all__'
@@ -72,10 +73,10 @@ class GoodsSearchSerializer(ModelSerializer):
                 result.append(data)
         return result
 
-    def get_total_inventory(self,obj):
-        id=obj.id
-        total_inventory=GoodsInventoryModel.objects.filter(goods_id=id).aggregate(sum=Sum('cur_inventory'))
-        return total_inventory
+    def get_cur_inventory(self,obj):
+        return get_current_inventory(obj.id)
+
+
 
 
 

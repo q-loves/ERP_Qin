@@ -8,4 +8,3 @@ class SupplierSerializer(ModelSerializer):
     class Meta:
         model=SupplierModel
         fields='__all__'
-        4

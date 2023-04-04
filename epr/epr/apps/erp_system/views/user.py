@@ -1,11 +1,9 @@
 from rest_framework import mixins, status
-from rest_framework.decorators import action
 from rest_framework.generics import CreateAPIView, GenericAPIView
 
 from erp_system.serializers.user import UserSerializer
 
 from erp_system.models import UserModel
-from rest_framework.mixins import UpdateModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
@@ -14,7 +12,7 @@ from erp_system.serializers.user import UpdateOrDeleteSerializer
 from erp_system.serializers.user import ListOrRetrieveSerializer
 
 from erp_system.serializers.user import ResetPasswordSerializer
-from epr.utils.multiple_delete import MultipleDeleteMixin
+from epr.utils.base_views.multiple_delete import MultipleDeleteMixin
 
 class RegisterView(CreateAPIView):
     serializer_class = UserSerializer

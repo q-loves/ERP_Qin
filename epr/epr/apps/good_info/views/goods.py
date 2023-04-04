@@ -10,14 +10,14 @@ from good_info.models import GoodsModel
 from good_info.serializers.goods import GoodsSimpleSerializer
 
 from good_info.serializers.goods import GoodsSearchSerializer
-from epr.utils.get_queryset_by_keywords import GetQuerysetByKeywords
+from epr.utils.base_views.get_queryset_by_keywords import GetQuerysetByKeywords
 
 
 class GoodsView(ModelViewSet,GetQuerysetByKeywords):
 
     queryset = GoodsModel.objects.all()
     def get_serializer_class(self):
-        if self.action=='get_queryset_by_keywords':
+        if self.action=='get_queryset_by_keywords' or self.action=='list':
             return GoodsSearchSerializer
         else:
             return GoodsSimpleSerializer

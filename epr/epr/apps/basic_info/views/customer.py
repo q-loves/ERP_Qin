@@ -1,15 +1,10 @@
-from django.db.models import Q
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
-from rest_framework.decorators import action
-from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from basic_info.models import CustomerModel
 
 from basic_info.serializers.customer import CustomerSerializer
 
-from epr.utils.get_queryset_by_keywords import GetQuerysetByKeywords
+from epr.utils.base_views.get_queryset_by_keywords import GetQuerysetByKeywords
 
 
 class CustomerView(ModelViewSet,GetQuerysetByKeywords):

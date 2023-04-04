@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django_celery_results',#配置celery
     'basic_info',
     'good_info',
+    'purchase_info',
 ]
 
 MIDDLEWARE = [

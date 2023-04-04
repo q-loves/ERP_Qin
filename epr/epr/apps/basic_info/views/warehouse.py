@@ -7,7 +7,7 @@ from basic_info.models import WarehouseModel
 from basic_info.serializers.warehouse import WarehouseSearchSerializer,WarehouseSimpleSerializer
 
 from epr.tasks import create_warehouse_inventory
-from epr.utils.get_queryset_by_keywords import GetQuerysetByKeywords
+from epr.utils.base_views.get_queryset_by_keywords import GetQuerysetByKeywords
 
 
 class WarehouseView(ModelViewSet,GetQuerysetByKeywords):

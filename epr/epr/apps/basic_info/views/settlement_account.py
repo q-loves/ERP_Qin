@@ -9,7 +9,7 @@ from basic_info.models import SettlementAccountModel
 
 from basic_info.serializers.settlement_account import SettlementAccountSerializer
 
-from epr.utils.get_queryset_by_keywords import GetQuerysetByKeywords
+from epr.utils.base_views.get_queryset_by_keywords import GetQuerysetByKeywords
 
 
 class SettlementAccountView(ModelViewSet,GetQuerysetByKeywords):

@@ -10,8 +10,7 @@ from erp_system.models import RoleModel
 
 from erp_system.serializers.role import RolePartialSerializer, RoleSimpleSerializer, RolesPartialSerializer
 
-from erp_system.models import MenuModel
-from epr.utils.multiple_delete import MultipleDeleteMixin
+from epr.utils.base_views.multiple_delete import MultipleDeleteMixin
 from erp_system.models import PermissionModel
 
 

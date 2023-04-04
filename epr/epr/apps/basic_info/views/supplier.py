@@ -9,8 +9,8 @@ from basic_info.serializers.supplier import SupplierSerializer
 
 from basic_info.models import SupplierModel
 
-from epr.utils.get_queryset_by_keywords import GetQuerysetByKeywords
-from epr.utils.multiple_open import MultipleOpenOrClose
+from epr.utils.base_views.get_queryset_by_keywords import GetQuerysetByKeywords
+from epr.utils.base_views.multiple_open import MultipleOpenOrClose
 
 
 class SupplierView(ModelViewSet,MultipleOpenOrClose,GetQuerysetByKeywords):

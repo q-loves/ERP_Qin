@@ -4,7 +4,6 @@ from rest_framework.serializers import ModelSerializer
 from basic_info.models import WarehouseModel
 
 #用于增删改
-from epr.utils.get_queryset_by_keywords import GetQuerysetByKeywords
 
 
 class WarehouseSimpleSerializer(ModelSerializer):
