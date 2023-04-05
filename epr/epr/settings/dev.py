@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'basic_info',
     'good_info',
     'purchase_info',
+    'warehouse_info',
 ]
 
 MIDDLEWARE = [

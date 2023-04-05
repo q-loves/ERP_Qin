@@ -8,6 +8,8 @@ from purchase_info.models import PurchaseModel,PurchaseItemModel
 
 from good_info.models import GoodsModel
 
+from epr.utils.base_views.get_cur_inventory import get_current_inventory
+
 
 class PurchaseItemSerializer(ModelSerializer):
 
@@ -69,6 +71,7 @@ class PurchaseGetItemSerializer(ModelSerializer):
 
     item_list=serializers.SerializerMethodField()
 
+
     class Meta:
         model=PurchaseModel
         fields='__all__'
@@ -81,6 +84,7 @@ class PurchaseGetItemSerializer(ModelSerializer):
                 # good=GoodsModel.objects.get(id=item.goods.id)
                 good=item.goods
                 dict['name']=good.name
+                dict['cur_inventory']=get_current_inventory(good.id)
                 dict['specification']=good.specification
                 dict['model_number']=good.model_number
                 dict['color']=good.color
@@ -96,6 +100,7 @@ class PurchaseGetItemSerializer(ModelSerializer):
                 result.append(dict)
             return result
         return result
+
 
 
 

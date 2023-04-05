@@ -20,7 +20,6 @@ class PurchaseModel(BaseModel):
     operator_user = models.ForeignKey('erp_system.UserModel', related_name='operator_purchase_list', null=True,
                                       blank=True, on_delete=models.SET_NULL,
                                       verbose_name='采购操作人员，不能修改')
-
     # 增加一个冗余字段
     operator_user_name = models.CharField('操作人员的真实姓名', max_length=20, null=True, blank=True)
     check_user = models.ForeignKey('erp_system.UserModel', null=True, blank=True, on_delete=models.SET_NULL,
