@@ -13,9 +13,10 @@ from purchase_info.serializers.purchase import PurchaseSerializer
 from purchase_info.serializers.purchase import PurchaseGetItemSerializer
 from epr.utils.base_views.get_queryset_by_keywords import GetQuerysetByKeywords
 from epr.utils.base_views.multiple_audit import MultipleAuditMixin
+from epr.utils.base_views.multiple_delete import MultipleDeleteMixin
 
 
-class PurchaseView(ModelViewSet,MultipleAuditMixin,GetQuerysetByKeywords):
+class PurchaseView(ModelViewSet,MultipleAuditMixin,GetQuerysetByKeywords,MultipleDeleteMixin):
 
     queryset = PurchaseModel.objects.all()
 

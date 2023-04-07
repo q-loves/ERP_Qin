@@ -9,11 +9,6 @@ urlpatterns=[
 ]
 
 router=SimpleRouter()
-
-
-
-
-
 router.register('instorage',InStorageView)
 
 urlpatterns+=router.urls

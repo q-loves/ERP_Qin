@@ -41,6 +41,7 @@ urlpatterns = [
     re_path(r'^api/',include('good_info.urls')),
     re_path(r'^api/',include('purchase_info.urls')),
     re_path(r'^api/',include('warehouse_info.urls')),
+    re_path(r'^api/',include('financial_info.urls')),
     # 媒体资源文件的访问路由
     # re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 

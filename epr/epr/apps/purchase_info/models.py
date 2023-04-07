@@ -6,7 +6,7 @@ from epr.utils.base_model import BaseModel
 
 
 class PurchaseModel(BaseModel):
-    invoices_date = models.DateTimeField('单据日期')
+    invoices_date = models.DateTimeField('单据日期',blank=True,null=True)
     number_code = models.CharField('单据编号,不让用户填写', max_length=28)
     discount = models.DecimalField('优惠率,最多精确到小数点后两位', max_digits=5, decimal_places=2, blank=True, null=True)
     discount_money = models.DecimalField('优惠金额(付款优惠),最多精确到小数点后两位', max_digits=10, decimal_places=2, blank=True,

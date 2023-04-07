@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'good_info',
     'purchase_info',
     'warehouse_info',
+    'financial_info',
 ]
 
 MIDDLEWARE = [

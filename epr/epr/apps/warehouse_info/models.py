@@ -17,6 +17,8 @@ class PurchaseStorageModel(BaseModel):
                                       null=True)
     other_money = models.DecimalField('其他费用,最多精确到小数点后两位', max_digits=10, decimal_places=2, default=0, blank=True,
                                       null=True)
+
+    #注：this_payment,this_debt两个属性在开始时不用填，在付款单审核时会自动填入
     this_payment = models.DecimalField('本次付款,最多精确到小数点后两位', max_digits=10, decimal_places=2, default=0, blank=True,
                                        null=True)
     this_debt = models.DecimalField('本次欠款,最多精确到小数点后两位', max_digits=10, decimal_places=2, default=0, blank=True,
@@ -26,12 +28,11 @@ class PurchaseStorageModel(BaseModel):
     status = models.CharField('状态,0:未审核,1:已审核,2:部分付款,3:付款完成(包括欠款)', max_length=1, default='0')
 
     operator_user = models.ForeignKey('erp_system.UserModel', related_name='operator_in_list', null=True,
-                                      on_delete=models.SET_NULL,
-                                      verbose_name='入库操作人员，不能修改')
+                                      on_delete=models.SET_NULL,verbose_name='入库操作人员，不能修改',related_query_name='operator_instorage')
     # 增加一个冗余字段
     operator_user_name = models.CharField('操作人员的真实姓名', max_length=20, null=True, blank=True)
     check_user = models.ForeignKey('erp_system.UserModel', null=True, blank=True, on_delete=models.SET_NULL,
-                                   verbose_name='审核人员，不能修改')
+                                   verbose_name='审核人员，不能修改',related_query_name='check_instorage')
     # 增加一个冗余字段
     check_user_name = models.CharField('操作人员的真实姓名', max_length=20, null=True, blank=True)
 
@@ -44,7 +45,7 @@ class PurchaseStorageModel(BaseModel):
     supplier_name = models.CharField('供应商名称', max_length=30, null=True, blank=True)
 
     purchase = models.ForeignKey('purchase_info.PurchaseModel', null=True, blank=True, on_delete=models.SET_NULL,
-                                 verbose_name='采购订单，审核之后不能改')
+                                 verbose_name='采购订单，审核之后不能改',related_name='purchase_storage')
 
     attachment_list = models.CharField('附件的id列表，字段的值为: 1,2,3,4', max_length=20, null=True, blank=True)
 

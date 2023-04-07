@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.db.models import Sum
 
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -8,6 +9,7 @@ from purchase_info.models import PurchaseModel,PurchaseItemModel
 
 from good_info.models import GoodsModel
 
+from financial_info.models import PaymentModel
 from epr.utils.base_views.get_cur_inventory import get_current_inventory
 
 
@@ -21,6 +23,7 @@ class PurchaseSerializer(ModelSerializer):
 
     item_list=PurchaseItemSerializer(many=True,write_only=True)
     goods_info=serializers.SerializerMethodField()
+    not_receive=serializers.SerializerMethodField()
 
     class Meta:
         model=PurchaseModel
@@ -65,6 +68,11 @@ class PurchaseSerializer(ModelSerializer):
                 result.append(item.name + (item.specification if item.specification else '') +item.number_code)
             return ','.join(result)
         return ''
+    #查询还未收到的货款
+    def get_not_receive(self,obj):
+        payment=PaymentModel.objects.filter(purchase_id=obj.id).aggregate(sum=Sum('pay_money'))
+        not_receive=obj.last_amount-payment['sum']
+        return not_receive
 
 #用于展示某一个订单的具体购买货物信息
 class PurchaseGetItemSerializer(ModelSerializer):
