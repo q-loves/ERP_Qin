@@ -70,8 +70,9 @@ class PurchaseSerializer(ModelSerializer):
         return ''
     #查询还未收到的货款
     def get_not_receive(self,obj):
-        payment=PaymentModel.objects.filter(purchase_id=obj.id).aggregate(sum=Sum('pay_money'))
-        not_receive=obj.last_amount-payment['sum']
+        # status='0':必须是审核过的支付单才可以生效
+        payment=PaymentModel.objects.filter(purchase_id=obj.id).exclude(status='0').aggregate(sum=Sum('pay_money'))
+        not_receive=obj.last_amount- (payment['sum'] if payment['sum'] else 0)
         return not_receive
 
 #用于展示某一个订单的具体购买货物信息

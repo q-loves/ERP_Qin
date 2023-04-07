@@ -3,6 +3,7 @@ from django.db.models import Sum
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
@@ -14,6 +15,7 @@ from purchase_info.models import PurchaseModel
 
 from warehouse_info.models import PurchaseStorageModel
 
+from basic_info.models import SettlementAccountModel
 from epr.utils.base_views.multiple_delete import MultipleDeleteMixin
 
 
@@ -38,6 +40,8 @@ class PaymentView(ModelViewSet,MultipleDeleteMixin):
             ids=request.data.get('ids')
             payments=PaymentModel.objects.filter(id__in=ids).all()
             for payment in payments:
+                # if payment.status=='1':#表单不可反审核
+                #     raise ValidationError(f'id为{payment.id}的表单已经被审核')
                 pay_category=payment.pay_category
                 if pay_category=='1':#付定金
                     pur=PurchaseModel.objects.get(payment__id=payment.id)
@@ -57,11 +61,18 @@ class PaymentView(ModelViewSet,MultipleDeleteMixin):
                         instorage.save()
                 #判断采购单是否还有欠款last_amount 和 deposit
                 pur=PurchaseModel.objects.get(payment__id=payment.id)
-                #将该采购单对应的所有支付单的已付金额进行求和
-                pay_money=PaymentModel.objects.filter(purchase_id=pur.id).aggregate(sum=Sum('pay_money'))
-                if pay_money['sum']==pur.last_amount:
-                    pur.status='5'#全部付款完成
+                #将该采购单对应的所有已审核过的支付单的已付金额进行求和
+                pay_money=PaymentModel.objects.filter(purchase_id=pur.id).exclude(status='0').aggregate(sum=Sum('pay_money'))
+                if (pay_money['sum'] if pay_money['sum'] else 0)+payment.pay_money  ==pur.last_amount:
+                    pur.status='4'#全部付款完成
                     pur.save()
+                #修改payment状态，改为已审核
+                payment.status='1'
+                payment.save()
+                #修改支付用户的余额
+                account=payment.account
+                account.balance=account.balance-payment.pay_money
+                account.save()
         return Response(data={'message':'审批成功'})
 
 

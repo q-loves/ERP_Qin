@@ -135,6 +135,7 @@ class WarehouseModel(BaseModel):
         return self.name
 
 # 结算账户模型类
+#该模型虽然与很多模型关联，但是最终余额，只根据支付单的支出来计算
 class SettlementAccountModel(BaseModel):
     name = models.CharField(max_length=100, verbose_name='仓库名称', unique=True)
     number_code = models.CharField('编号', max_length=28, unique=True)

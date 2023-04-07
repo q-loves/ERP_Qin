@@ -40,7 +40,7 @@ class PaymentModel(BaseModel):
     status = models.CharField('状态,0:未审核,1:已审核', max_length=1, default='0')
 
     account = models.ForeignKey('basic_info.SettlementAccountModel', null=True, blank=True, on_delete=models.SET_NULL,
-                                verbose_name='结算账户，审核之后不能改')
+                                verbose_name='结算账户，审核之后不能改',related_name='payment')
     operator_user = models.ForeignKey('erp_system.UserModel', related_name='operator_pay_list', null=True,
                                       blank=True, on_delete=models.SET_NULL,
                                       verbose_name='财务操作人员，不能修改')
